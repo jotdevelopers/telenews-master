@@ -1,0 +1,111 @@
+
+{% extends 'base.html' %}
+{% block main %}
+<section class="GContent">
+  {% include 'left_user_menu.html' %}
+  <!-- **********end -->
+  <!-- *********************************************************************** all generlaist content show  -->
+  <script>
+    function myFunction(val) {
+      var x = document.getElementById(val);
+      if (x.style.display === "none") {
+        x.style.display = "block";
+      } else {
+        x.style.display = "none";
+      }
+    }
+
+
+    function newsDetail(val) {
+  var popup = document.getElementById(val);
+  popup.classList.toggle("show");
+}
+  </script>
+  <div class="G1">
+    <br /><br />
+    {% set count = namespace(value=0) %}
+    {% for news in news_list %}
+    <div class="Gformat">
+      <!-- name/time -->
+      <a class="time" href=""><i class="far fa-clock"></i>{{news.views}} views.{{ news.created_at }}</a>
+      <!-- news title -->
+      <a href="{{ url_for('summary_view', news_id=news.id) }}" id="{{news.id}}">
+        <h2>{{ news.title }}</h2>
+      </a>
+
+    </div>
+
+    {% endfor %}
+  </div>
+  <!-- ******* end -->
+  <!-- *********************************************************************** generalist tag info Start -->
+  {% include 'right_popular_news.html'%}
+  <!-- ******* end -->
+</section>
+<!-- for comment section news -->
+<script>
+  function hiFunction(value) {
+    var x = document.getElementById(value);
+    if (x.style.display === "none") {
+      x.style.display = "block";
+    } else {
+      x.style.display = "none";
+    }
+  }
+</script>
+<!-- for translated news -->
+
+
+<!-- for follow button  -->
+<script type="text/javascript">
+  $(document).ready(function () {
+    $("#follow-button").click(function () {
+      if ($("#follow-button").text() == "+ Follow") {
+        // *** State Change: To Following ***
+        // We want the button to squish (or shrink) by 10px as a reaction to the click and for it to last 100ms
+        $("#follow-button").animate(
+          { width: "-=10px" },
+          100,
+          "easeInCubic",
+          function () { }
+        );
+
+        // then now we want the button to expand out to it's full state
+        // The left translation is to keep the button centred with it's longer width
+        $("#follow-button").animate(
+          { width: "+=45px", left: "-=15px" },
+          600,
+          "easeInOutBack",
+          function () {
+            $("#follow-button").css("color", "#fff");
+            $("#follow-button").text("Following");
+
+            // Animate the background transition from white to green. Using JQuery Color
+            $("#follow-button").animate(
+              {
+                backgroundColor: "#2EB82E",
+                borderColor: "#2EB82E",
+              },
+              1000
+            );
+          }
+        );
+      } else {
+        // *** State Change: Unfollow ***
+        // Change the button back to it's original state
+        $("#follow-button").animate(
+          { width: "-=25px", left: "+=15px" },
+          600,
+          "easeInOutBack",
+          function () {
+            $("#follow-button").text("+ Follow");
+            $("#follow-button").css("color", "#3399FF");
+            $("#follow-button").css("background-color", "#ffffff");
+            $("#follow-button").css("border-color", "#3399FF");
+          }
+        );
+      }
+    });
+  });
+</script>
+{% endblock %}

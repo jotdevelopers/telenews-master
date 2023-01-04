@@ -1,0 +1,49 @@
+<div class="S2" style="width: 30%; padding: 0 3px">
+  <div class="S21" style="width: 90%; padding: 5%">
+    <a href="{{ url_for('generalist_news') }}"><button class="buttonN1">News Articles</button></a>
+    <a href="{{ url_for('hello_world') }}"><button class="buttonA1">News Summary</button></a>
+    <form action="{{ url_for('news_by_category') }}" , method="post">
+      {% if search_form %}
+      <div class="form-group d-flex align-items-center">
+        {{ search_form.search(class = "w-100 my-5 form-control mx-5 rounded-pill", value='', placeholder=
+        search_form.search.label.text) }}
+        {{ search_form.submit(class = "btn btn-secondary form-control h-25 w-25 align-self-center") }}
+      </div>
+      {% endif %}
+    </form>
+    <hr />
+    <div class="pb-3">
+      <div class="mb-3">
+        <h4>Categories</h4>
+      </div>
+      <form action="{{ url_for('news_by_category') }}" method="post">
+        <div class="d-flex flex-wrap m-n1">
+          {% for category in categories %}
+          <!-- <a href="{{ url_for('generalist_news') }}" class="btn btn-sm btn-outline-secondary m-1">{{category.name}}</a> -->
+          {{category_form.submit(class = 'btn btn-sm btn-secondary m-1 rounded-pill', value = category.name)}}
+          {% endfor %}
+        </div>
+      </form>
+    </div>
+    <hr />
+    <div class="popular">
+      <div class="mb-3">
+        <h4>Popular News</h4>
+      </div>
+      <div style="color: black; text-align: left; margin-bottom: 12px">
+        {% if popular_news %}
+        {% for news in popular_news %}
+        <a href="{{ url_for('summary_view', news_id=news.id) }}">{{ news.title }}</a>
+        <hr style="
+              border: 0.1px dotted;
+              margin-top: 7px;
+              margin-bottom: 7px;
+              color: lightgray;
+            " />
+        {% endfor %}
+        {% endif%}
+      </div>
+    </div>
+  </div>
+  <br /><br /><br />
+</div>

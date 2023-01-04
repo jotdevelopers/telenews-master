@@ -1,0 +1,194 @@
+{% extends 'base.html' %}
+{% block main %}
+<section class="GContent">
+  {% if current_user.role == 'admin' %}
+  {% include 'left_admin_menu.html' %}
+  {% endif %}
+  {% if not current_user.role == 'admin' %}
+  {% include 'left_user_menu.html' %}
+  {% endif %}
+  <!-- **********end -->
+  <!-- *********************************************************************** all generlaist content show  -->
+  <div class="G1">
+    <br /><br />
+    <div class="AGformat">
+      <!-- name/time -->
+      <a class="time" href=""><i class="far fa-clock"></i>{{news.views}} views.{{ news.created_at }} | {{news.article.poster.username}}</a>
+      <!-- news title -->
+      <a href="#">
+        <h2 style="margin-top: 35px">{{ news.title }}</h2>
+      </a>
+      {% if current_user.id == news.article.poster.id %}
+      <a class="btn btn-secondary mr-5" href="{{ url_for('delete_post', news_id=news.id) }}">DELETE POST</a>
+      {% endif %}
+      {% if current_user.id != news.article.poster.id %}
+      <!-- <a class="btn btn-secondary" href="{{ url_for('report_news', news_id=news.id) }}">REPORT POST</a> -->
+      <form action="{{ url_for('report_news', news_id=news.id) }}" method="post">
+        <!-- Button trigger modal -->
+        <a class="btn btn-secondary mr-5" href="" data-toggle="modal" data-target="#reportModal">
+          REPORT POST
+        </a>
+
+        <!-- Modal -->
+        <div class="modal modal-dialog modal-dialog-centered fade" id="reportModal" tabindex="-1"
+          aria-labelledby="reportModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="reportModalLabel">Report</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+
+              <div class="modal-body flex-col">
+                {{report_form.reason(class="m-1 form-control
+                form-control-lg",
+                placeholder=report_form.reason.label.text)}}
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                {{report_form.submit(class="btn btn-primary")}}
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </form>
+      {% endif %}
+      <div class="Aimg">
+        <img style="
+                width: 100%;
+                height: 50%;
+                margin-top: 5px;
+                border-radius: 0px;
+                margin-bottom: 30px;
+              " src="/news/{{news.id}}" />
+      </div>
+      <!-- news summary -->
+      <h4 style="text-align: justify">{{ news.article.description }}a</h4>
+    </div>
+
+    <!-- share icons -->
+    <div class="mediabuttons">
+      <a class="active" data-toggle="dropdown" href="#"><i class="fa fa-fw fa-share"></i>&nbsp;SHARE</a>
+      <div class="dropdown-menu">
+        <a href="whatsapp://send?text=This is WhatsApp sharing example using link" data-action="share/whatsapp/share"
+          target="_blank"><i class="fa fa-whatsapp" aria-hidden="true"></i>
+        </a>
+
+
+        <script async defer crossorigin="anonymous"
+          src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v15.0" nonce="qprtsYAI"></script>
+        <div class="fb-share-button" data-href="{{ url_for('summary_view', news_id=news.id) }}"
+          data-layout="button_count" data-size="small">
+          <a target="_blank"
+            href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse"
+            class="fb-xfbml-parse-ignore">Share</a>
+        </div>
+      </div>
+
+      <a href="{{url_for('bookmark',news_id = news.id)}}"><i class="fa fa-bookmark"
+          aria-hidden="true"></i>&nbsp;BOOKMARK</a>
+      <a class="active" href="#"><i class="fa fa-volume-up" aria-hidden="true"></i>&nbsp;LISTEN</a>
+      <button class="translater btn btn-secondary" onclick="myFunction()">
+        TRANSLATE NEWS
+      </button>
+      <!--translater  -->
+      <div id="myDIV">
+        <p>
+          ذرائع کے مطابق سول ملٹری براس نے ملکی سلامتی کی صورتحال اور فوج کے
+          پیشہ ورانہ امور سمیت متعدد امور پر تبادلہ خیال کیا۔ ذرائع نے مزید
+          بتایا کہ ملاقات وزیراعظم آفس میں ہوئی۔ آرمی چیف نے آخری بار اپریل
+          میں وزیراعظم سے ملاقات کی تھی۔ وزیر اعظم آفس سے جاری بیان میں کہا
+          گیا ہے کہ ملاقات کے دوران قومی سلامتی سے متعلق پیشہ ورانہ امور پر
+          تبادلہ خیال کیا گیا۔
+        </p>
+      </div>
+      <!-- Comment section news -->
+
+      <!-- <div id="ComDIV"> -->
+      <hr />
+      <br /><br />
+      <!-- Comment section news -->
+
+      {% include 'comment_section.html' %}
+      <!-- </div> -->
+    </div>
+  </div>
+  <!-- ******* end -->
+  <!-- *********************************************************************** generalist tag info Start -->
+  {% if not current_user.role == 'admin' %}
+  <div class="S2" style="width: 30%; padding: 0 3px">
+    <div class="S21" style="width: 90%; padding: 5%">
+      <a href="/newsSummary"><button class="buttonN1">News Summary</button></a>
+      <a href="/generalistNews"><button class="buttonA1">News Articles</button></a>
+      <!-- <div class="form-outline">
+        <input style="
+                width: 98%;
+                margin-left: 10px;
+                height: 40px;
+                border-radius: 30px;
+                margin-top: 14%;
+                margin-bottom: 8%;
+              " type="search" id="form1" class="form-control" placeholder="Search" aria-label="Search" />
+      </div>
+      <hr />
+      <div class="pb-3">
+        <div class="mb-3">
+          <h4>Categories</h4>
+        </div>
+        <div class="d-flex flex-wrap m-n1">
+          <a href="" class="btn btn-sm btn-outline-secondary m-1">Politics</a>
+          <a href="" class="btn btn-sm btn-outline-secondary m-1">Business</a>
+          <a href="" class="btn btn-sm btn-outline-secondary m-1">Corporate</a>
+          <a href="" class="btn btn-sm btn-outline-secondary m-1">Sports</a>
+          <a href="" class="btn btn-sm btn-outline-secondary m-1">Health</a>
+          <a href="" class="btn btn-sm btn-outline-secondary m-1">Education</a>
+          <a href="" class="btn btn-sm btn-outline-secondary m-1">Science</a>
+          <a href="" class="btn btn-sm btn-outline-secondary m-1">Technology</a>
+          <a href="" class="btn btn-sm btn-outline-secondary m-1">Foods</a>
+          <a href="" class="btn btn-sm btn-outline-secondary m-1">Entertainment</a>
+          <a href="" class="btn btn-sm btn-outline-secondary m-1">Travel</a>
+          <a href="" class="btn btn-sm btn-outline-secondary m-1">Lifestyle</a>
+        </div>
+      </div> -->
+      <hr />
+      <div class="popular">
+        <div class="mb-3">
+          <h4>Popular News</h4>
+        </div>
+        <div style="color: black; text-align: left; margin-bottom: 12px">
+          {% if popular_news %}
+          {% for news in popular_news %}
+          <a href="{{ url_for('summary_view', news_id=news.id) }}">{{ news.title }}</a>
+          <hr style="
+              border: 0.1px dotted;
+              margin-top: 7px;
+              margin-bottom: 7px;
+              color: lightgray;
+            " />
+          {% endfor %}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <br /><br /><br /><br /><br />
+  </div>
+  {% endif %}
+  <!-- ******* end -->
+</section>
+<!-- for comment section news -->
+
+<!-- for translated news -->
+<script>
+  function myFunction() {
+    var x = document.getElementById("myDIV");
+    if (x.style.display === "none") {
+      x.style.display = "block";
+    } else {
+      x.style.display = "none";
+    }
+  }
+</script>
+{% endblock%}

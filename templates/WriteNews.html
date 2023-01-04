@@ -1,0 +1,46 @@
+{% extends 'base.html'%}
+{% block main %}
+  <section class="GContent">
+    {% include 'left_user_menu.html' %}
+    <div class="G1">
+      <form method="post" , action="{{ url_for('write_news') }}", enctype="multipart/form-data">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="writeNews">
+          <!-- <a style="cursor: pointer;" href="/generalistNews"><img class="R1" src="/static/Images/logo.png"></a> -->
+          <img class="R3" src="/{{current_user.id}}" />
+          <!-- <button class="button button2">Save</button> -->
+          {{ news_form.publish(class="btn btn-primary button button2 rounded-pill")}}
+          {{ news_form.draft(class="btn btn-primary button button2 rounded-pill")}}
+
+          <br /><br />
+          <hr style="border-color: #dc1c13; box-shadow: 2px" />
+        </div>
+        <div class="writeNews1">
+          
+          {% with messages = get_flashed_messages() %}
+          {% if messages %}
+          <div class="alert alert-success alert-dismissible show" role="alert">
+            {{messages[0]}}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          {% endif %}
+          {% endwith %}
+
+          {{ news_form.image(class="form-control") }}
+          <!-- <input class="R1" name='file_picker' type="file" /> <br /><br /> -->
+          {{ news_form.title(class="wtitle", placeholder=news_form.title.label.text)}}
+          <!-- <textarea class="wtitle" rows="2" cols="40" name="news_title"
+            placeholder="+Write title of your news"></textarea> -->
+          <hr />
+          {{ news_form.description(class="form-control", style="height=100px", placeholder=news_form.description.label.text)}}
+          {{ news_form.category(class="form-control my-5")}}
+          <!-- <textarea class="wnews" rows="16" cols="100" name="news_desc"
+            placeholder="+Write your newws discription..."></textarea> -->
+        </div>
+      </form>
+    </div>
+
+  </section>
+  {% endblock %}

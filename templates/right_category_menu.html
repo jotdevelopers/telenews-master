@@ -1,0 +1,44 @@
+<div class="G2" style="width: 30%; padding: 0 3px;">
+  <div class="G21" style="width: 90%; padding: 5%;">
+    <a href="/newsSummary"><button class="buttonN">News Summary</button></a>
+    <a href="/generalistNews"><button class="buttonA">News Articles</button></a>
+    
+    <hr>
+    <!--  <div class="popular">
+                      <div class=" mb-3">
+                          <h4 >Popular News</h4>
+                      </div>
+                      <div style=";color: black; text-align: left; margin-bottom: 10px;" >
+                          <a href="">Top Best Internet Marketing Tips.</a><hr style="border: 0.1px dotted;margin-top: 0; margin-bottom: 0; color: lightgray">
+                          <a href="">The relationship between the current document. </a><hr style="border: 0.1px dotted;margin-top: 0; margin-bottom: 0;color: lightgray">
+                          <a href="">Meta-owned instant messaging app is developing.</a><hr style="border: 0.1px dotted;margin-top: 0; margin-bottom: 0;color: lightgray">
+                          <a href="">The relationship between the current document. </a>
+                      </div>
+                  </div> -->
+    <!-- <hr> -->
+    <div class="follow">
+      <div class=" mb-3">
+        <h4>Who to follow</h4>
+      </div>
+    </div>
+    {% for user in follow %}
+    <div class="follow">
+      <div class=" mb-3">
+        <h4 style="margin-top: 20px;"></h4>
+      </div>
+      <div class="d-flex flex-wrap m-n1">
+        <img src="/{{user.id}}">
+        <h5>{{ user.username }}</h5>
+        <a href="{{url_for('follow',user_id = user.id)}}">
+          <button id="follow-button">+ Follow</button>
+        </a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <a class="followlink" href="/followerlist">See more suggestions</a>
+</div>
+
+
+<br><br><br>
+</div>
